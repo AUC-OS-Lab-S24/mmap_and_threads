@@ -33,10 +33,11 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
     fseek(file, 0, SEEK_SET);
 
     // Read the integers into an array
-    int *numbers = (int *)malloc(count * sizeof(int));
-    for (int i = 0; i < count; i++)
+    unsigned long *numbers = (unsigned long *)malloc(count * sizeof(unsigned long));
+    fscanf(file, "%lu", &numbers[0]);
+    for (int i = 1; i < count; i++)
     {
-        fscanf(file, "%d", &numbers[i]);
+        fscanf(file, ",%lu", &numbers[i]);
     }
 
     // Close the file
@@ -52,7 +53,7 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
     }
 
     // Create a shared memory object
-    int *shared_memory = (int *)mmap(NULL, num_processes * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    unsigned long *shared_memory = (unsigned long *)mmap(NULL, num_processes * sizeof(unsigned long), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
     if (shared_memory == MAP_FAILED)
     {
@@ -69,7 +70,7 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
             int start = i * size;
             // last index for last process is count - 1
             int end = (i == (num_processes - 1)) ? count : (start + size);
-            int result = numbers[start];
+            unsigned long result = numbers[start];
             for (int j = start + 1; j < end; j++)
             {
                 result = func(result, numbers[j]);
@@ -110,7 +111,7 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
 
     // free memory
     free(numbers);
-    munmap(shared_memory, num_processes * sizeof(int));
+    munmap(shared_memory, num_processes * sizeof(unsigned long));
 
     return final_result;
 }
