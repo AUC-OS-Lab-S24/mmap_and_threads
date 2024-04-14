@@ -30,7 +30,7 @@ int main()
 
 /*
 
-
+For improvement:
 This implementation is faster for reading files directly into memory, despite potential overhead from memory reallocation.
 Used code: Essentially O(2n) due to reading the file twice—first to count the items and then to read them into an array. Simplified to O(n).
 Second code: O(n) because it processes each item exactly once during the reading and storing operation.
