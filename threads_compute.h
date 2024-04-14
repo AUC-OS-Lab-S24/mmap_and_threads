@@ -101,12 +101,12 @@ unsigned long threads_compute(int num_threads, char *path, unsigned long (*func)
     }
 
     // Join threads
-    unsigned long result = 0;
-    for (int i = 0; i < num_threads; i++)
+    unsigned long thread_result;
+    unsigned long result = pthread_join(threads[0], (void **)&thread_result);
+    for (int i = 1; i < num_threads; i++)
     {
-        unsigned long temp;
-        pthread_join(threads[i], (void **)&temp);
-        result = func(result, temp);
+        pthread_join(threads[i], (void **)&thread_result);
+        result = func(result, thread_result);
     }
 
     // Free the array
