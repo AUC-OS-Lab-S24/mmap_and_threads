@@ -10,7 +10,7 @@
  * Takes the number of processes, a path to a file containing numbers, a pointer to a function that takes 2 integers and returns an unsigned long integer.
  * Returns the result of applying the function on the numbers as an unsigned long integer by splitting the work as evenly as possible using multiple processes working together via shared memory.
  */
-unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(int, int))
+unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(unsigned long, unsigned long))
 {
     // Open the file
     FILE *file = fopen(path, "r");
