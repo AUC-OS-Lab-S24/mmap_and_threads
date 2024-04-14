@@ -101,10 +101,11 @@ unsigned long threads_compute(int num_threads, char *path, unsigned long (*func)
     }
 
     // Join threads
-    unsigned long thread_result;
-    unsigned long result = pthread_join(threads[0], (void **)&thread_result);
+    unsigned long result;
+    pthread_join(threads[0], (void **)&result);
     for (int i = 1; i < num_threads; i++)
     {
+        unsigned long thread_result;
         pthread_join(threads[i], (void **)&thread_result);
         result = func(result, thread_result);
     }
