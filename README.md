@@ -20,7 +20,7 @@ sequential_compute [(from previous project)](https://github.com/AUC-OS-Lab-S24/S
 
 ## [Slides](https://docs.google.com/presentation/d/1Wg4XmHcrndz6813wmHoO_zncmwknOuQLCzqJ2ZvWM0U/edit?usp=sharing)
 - [ ] Roles of every team member.
-- [ ] Detailed description of the inputs and outputs of mmap().
+- [X] Detailed description of the inputs and outputs of mmap().
 - [ ] Descriptions and pseudo-code of the 4 compute functions.
 - [ ] Simple examples showing the 4 compute functions producing correct results.
 - [ ] In pipes_compute and threads_compute, design figures illustrating the processes/threads and the pipes as well as the direction of flow of data.
