@@ -36,9 +36,25 @@ def plot_average(filename):
     x = df.columns[0]
     y = df.columns[1:]
     
+
+    
     df.plot(x=x, y=y, kind='line')
     plt.title(filename)
+    plt.xlabel(x)
+    plt.ylabel("Time (s)")
     plt.savefig(f"{filename}.png")
+
+    # plot only mmap and threads
+    y = ['mmap','parallel']
+    df.plot(x=x, y=y, kind='line') 
+    plt.title(filename+" (mmap and threads)")
+    plt.xlabel(x)
+    plt.ylabel("Time (s)")
+    plt.savefig(f"{filename}_mmap_threads.png")
+
+    y = ['threads', 'sequential']
+
+
     #plt.show()
 
 
