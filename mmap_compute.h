@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
+
+// For Profiling we have global variable here for clock time
+struct timespec startmmap, endmmap;
+
 /*
  * Takes the number of processes, a path to a file containing numbers, a pointer to a function that takes 2 integers and returns an unsigned long integer.
  * Returns the result of applying the function on the numbers as an unsigned long integer by splitting the work as evenly as possible using multiple processes working together via shared memory.
@@ -42,6 +47,9 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
 
     // Close the file
     fclose(file);
+
+    /*ultimately where routine starts, we begin profiling*/
+    clock_gettime(CLOCK_MONOTONIC, &startmmap);
 
     int size = count / num_processes;
 
@@ -112,6 +120,9 @@ unsigned long mmap_compute(int num_processes, char *path, unsigned long (*func)(
     // free memory
     free(numbers);
     munmap(shared_memory, num_processes * sizeof(unsigned long));
+
+    /*profiling ends here*/
+    clock_gettime(CLOCK_MONOTONIC, &endmmap);
 
     return final_result;
 }

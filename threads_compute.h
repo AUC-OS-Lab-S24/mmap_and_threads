@@ -3,7 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <pthread.h>
+
+// For Profiling we have global variable here for clock time
+struct timespec startthreads, endthreads;
 
 /*
  * Takes the number of threads, a path to a file containing numbers, a pointer to a function that takes 2 integers and returns an unsigned long integer.
@@ -72,6 +76,9 @@ unsigned long threads_compute(int num_threads, char *path, unsigned long (*func)
     // Close the file
     fclose(file);
 
+    /*ultimately where routine starts, we begin profiling*/
+    clock_gettime(CLOCK_MONOTONIC, &startthreads);
+
     int size = count / num_threads;
 
     // case where count is less than n_proc
@@ -110,8 +117,12 @@ unsigned long threads_compute(int num_threads, char *path, unsigned long (*func)
         result = func(result, thread_result);
     }
 
+
     // Free the array
     free(numbers);
+
+    /* profiling ends here */
+    clock_gettime(CLOCK_MONOTONIC, &endthreads);
 
     return result;
 }
